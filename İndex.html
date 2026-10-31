@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090809">
+<title>Just For You.</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --bg: #090809;
+  --card: #151014;
+  --red: #96364d;
+  --text: #f4eeee;
+  --muted: #a0969c;
+  --line: rgba(255,255,255,.09);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
+
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  width:450px;
+  height:450px;
+  background:#781c35;
+  filter:blur(170px);
+  opacity:.17;
+  top:-250px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:-1;
+}
+
+.container {
+  width:min(100% - 40px,950px);
+  margin:auto;
+}
+
+nav {
+  height:75px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
+
+.logo {
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  letter-spacing:2px;
+}
+
+.nav-text {
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:2px;
+}
+
+.hero {
+  min-height:80vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:60px 0;
+}
+
+.eyebrow {
+  color:#c07889;
+  letter-spacing:5px;
+  font-size:10px;
+  margin-bottom:25px;
+}
+
+.hero h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(48px,10vw,95px);
+  font-weight:400;
+}
+
+.hero h1 span {
+  color:#a84960;
+  font-style:italic;
+}
+
+.hero p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.9;
+  margin-top:22px;
+}
+
+.button {
+  margin-top:30px;
+  border:1px solid #96364d88;
+  background:#96364d18;
+  color:white;
+  padding:15px 28px;
+  cursor:pointer;
+  border-radius:3px;
+  letter-spacing:2px;
+  font-size:10px;
+  transition:.3s;
+}
+
+.button:hover {
+  background:var(--red);
+  transform:translateY(-3px);
+}
+
+.section {
+  padding:85px 0;
+  border-top:1px solid var(--line);
+}
+
+.label {
+  color:#bd7185;
+  font-size:10px;
+  letter-spacing:4px;
+  margin-bottom:15px;
+}
+
+h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(30px,6vw,45px);
+  font-weight:400;
+  margin-bottom:35px;
+}
+
+.counter {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.counter-item {
+  background:linear-gradient(145deg,#191318,#100e10);
+  border:1px solid var(--line);
+  padding:28px 8px;
+  text-align:center;
+  border-radius:5px;
+}
+
+.counter-item strong {
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,7vw,45px);
+  font-weight:400;
+  color:#d58a9b;
+}
+
+.counter-item span {
+  font-size:9px;
+  color:var(--muted);
+  letter-spacing:2px;
+}
+
+.note {
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:18px;
+}
+
+.letter-card {
+  background:linear-gradient(145deg,#191318,#100d10);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:35px 22px;
+  text-align:center;
+}
+
+.letter-icon {
+  color:#c07889;
+  font-size:25px;
+  margin-bottom:18px;
+}
+
+.letter-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:25px;
+  font-weight:400;
+}
+
+.letter-card > p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.9;
+  margin-top:12px;
+}
+
+.letter-content {
+  display:none;
+  max-width:580px;
+  text-align:left;
+  margin:30px auto 0;
+  padding-top:25px;
+  border-top:1px solid var(--line);
+  animation:reveal .8s ease;
+}
+
+.letter-content.show { display:block; }
+
+.letter-content p {
+  color:#d9cbd0;
+  font-size:14px;
+  line-height:2.2;
+  white-space:pre-line;
+}
+
+@keyframes reveal {
+  from { opacity:0; transform:translateY(15px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.photo {
+  aspect-ratio:4/5;
+  background:#191318;
+  border:1px solid var(--line);
+  overflow:hidden;
+  border-radius:4px;
+}
+
+.photo img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.5s;
+}
+
+.photo:hover img { transform:scale(1.05); }
+
+.empty {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#81747b;
+  font-size:12px;
+}
+
+.upload {
+  margin-top:22px;
+  text-align:center;
+}
+
+.upload label {
+  display:inline-block;
+  border:1px solid var(--line);
+  padding:13px 22px;
+  color:#c7a6ae;
+  font-size:11px;
+  cursor:pointer;
+}
+
+#photoInput { display:none; }
+
+footer {
+  border-top:1px solid var(--line);
+  text-align:center;
+  padding:35px 0;
+  color:#81747b;
+  font-size:10px;
+  letter-spacing:3px;
+}
+
+.fade {
+  opacity:0;
+  transform:translateY(25px);
+  transition:.8s;
+}
+
+.fade.visible {
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(min-width:700px) {
+  .container { width:min(100% - 80px,950px); }
+  .hero { min-height:85vh; }
+  .section { padding:110px 0; }
+  .letter-card { padding:55px; }
+  .gallery { grid-template-columns:repeat(3,1fr); gap:20px; }
+  .counter { gap:20px; }
+  .counter-item { padding:38px; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<nav>
+  <div class="logo">For You.</div>
+  <div class="nav-text">A little something</div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Something special</div>
+  <h1>Just <span>For You.</span></h1>
+  <p>
+    Bazı insanlar hayatına girer<br>
+    ve her şeyi biraz daha anlamlı yapar.
+  </p>
+  <button class="button" onclick="document.getElementById('letter').scrollIntoView({behavior:'smooth'})">
+    Senin için hazırladım
+  </button>
+</section>
+
+<section class="section fade">
+  <div class="label">OUR TIME</div>
+  <h2>Birlikte geçen zaman.</h2>
+
+  <div class="counter">
+    <div class="counter-item">
+      <strong id="days">0</strong>
+      <span>GÜN</span>
+    </div>
+    <div class="counter-item">
+      <strong id="hours">00</strong>
+      <span>SAAT</span>
+    </div>
+    <div class="counter-item">
+      <strong id="minutes">00</strong>
+      <span>DAKİKA</span>
+    </div>
+  </div>
+
+  <p class="note">Her anın ayrı bir anlamı var.</p>
+</section>
+
+<section class="section fade" id="letter">
+  <div class="label">A LETTER FOR YOU</div>
+  <h2>Sana küçük bir not.</h2>
+
+  <div class="letter-card">
+    <div class="letter-icon">✦</div>
+    <h3>Bir şey söylemek istedim.</h3>
+    <p>
+      Bazen bazı şeyleri kelimelerle anlatmak zor.
+      Bu da onlardan biri.
+    </p>
+
+    <button class="button" id="letterButton" onclick="toggleLetter()">
+      Mektubu aç
+    </button>
+
+    <div class="letter-content" id="letterContent">
+      <p id="letterText"></p>
+    </div>
+  </div>
+</section>
+
+<section class="section fade" id="memories">
+  <div class="label">OUR MEMORIES</div>
+  <h2>Küçük anılarımız.</h2>
+
+  <div class="gallery" id="gallery">
+    <div class="photo empty">Birlikte çekildiğiniz fotoğraf</div>
+    <div class="photo empty">Güzel bir anı</div>
+    <div class="photo empty">Bir anı daha...</div>
+  </div>
+
+  <div class="upload">
+    <label for="photoInput">+ FOTOĞRAF EKLE</label>
+    <input type="file" id="photoInput" accept="image/*" multiple>
+  </div>
+</section>
+
+<footer>MADE WITH CARE · JUST FOR YOU</footer>
+</div>
+
+<script>
+
+// TARİH: 26 EKİM 2026
+const START_DATE = "2026-10-26";
+
+// ÖZEL MEKTUP
+const LETTER = `Dünkü olay için gerçekten özür dilerim.
+
+Yaptığım hatanın farkındayım ve seni üzdüysem
+bunun için gerçekten üzgünüm.
+
+Bida böyle bişey yapmicağımı söz veriyorum.
+
+Seni kırmak ya da üzmek istemem.
+Benim için çok değerlisin.
+
+İyi ki hayatımdasın, bitanem.
+Seni çok seviyorum. ❤️`;
+
+document.getElementById("letterText").textContent = LETTER;
+
+// SAYAÇ
+function updateCounter() {
+  const start = new Date(START_DATE + "T00:00:00");
+  const now = new Date();
+
+  if (start > now) return;
+
+  const diff = now - start;
+
+  document.getElementById("days").textContent =
+    Math.floor(diff / 86400000);
+
+  document.getElementById("hours").textContent =
+    String(Math.floor(diff / 3600000) % 24).padStart(2,"0");
+
+  document.getElementById("minutes").textContent =
+    String(Math.floor(diff / 60000) % 60).padStart(2,"0");
+}
+
+updateCounter();
+setInterval(updateCounter,10000);
+
+// MEKTUP AÇMA
+function toggleLetter() {
+  const content = document.getElementById("letterContent");
+  const button = document.getElementById("letterButton");
+
+  content.classList.toggle("show");
+
+  button.textContent = content.classList.contains("show")
+    ? "Mektubu kapat"
+    : "Mektubu aç";
+}
+
+// FOTOĞRAF EKLEME
+document.getElementById("photoInput").addEventListener("change",function() {
+  const gallery = document.getElementById("gallery");
+
+  Array.from(this.files).forEach(file => {
+    if (!file.type.startsWith("image/")) return;
+
+    const url = URL.createObjectURL(file);
+    const card = document.createElement("div");
+    card.className = "photo";
+
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Birlikte bir anı";
+
+    card.appendChild(img);
+    gallery.appendChild(card);
+  });
+
+  this.value = "";
+});
+
+// KAYDIRMA ANİMASYONU
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll(".fade").forEach(el => observer.observe(el));
+
+</script>
+</body>
+</html>
